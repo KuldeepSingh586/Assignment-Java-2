@@ -79,5 +79,19 @@ public class OrderQueueTest {
         assertTrue(choice);
         
     }
+    @Test
+    public void testthereIsNoListOfPurchaseThrowException() throws Exception {
+        boolean choice = false;
+        OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("CUST00001", "ABC Construction");
+        
+        try {
+            orderQueue.add(order);
+        } catch (Exception ex) {
+            choice = true;
+        }
+        assertTrue(choice);
+        
+    } 
     
 }
