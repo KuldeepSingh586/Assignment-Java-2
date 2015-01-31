@@ -15,9 +15,6 @@
  */
 package cpd4414.assign2;
 
-import cpd4414.assign2.OrderQueue;
-import cpd4414.assign2.Purchase;
-import cpd4414.assign2.Order;
 import java.util.Date;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -117,15 +114,15 @@ public class OrderQueueTest {
 
     @Test
     public void testWhenProcessOrderTheOrderHaveTimeRecivedTimeSetProcessedToNow() throws Exception {
-        //problem here in this test case
+
         OrderQueue orderQueue = new OrderQueue();
         Order order = new Order("CUST00001", "ABC Construction");
         order.addPurchase(new Purchase(0004, 450));
         order.addPurchase(new Purchase(0006, 250));
         orderQueue.add(order);
-        
+
         orderQueue.processOrder(order);
-        
+
         long expResult = new Date().getTime();
         long result = order.getTimeReceived().getTime();
         assertTrue(Math.abs(result - expResult) < 1000);
@@ -133,31 +130,59 @@ public class OrderQueueTest {
 
     @Test
     public void testWhenRequestToProcessOrderAndOrderNotHaveTimeReceivedThenThrowException() throws Exception {
+        boolean choice = false;
+        OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("CUST00001", "ABC Construction");
+        order.addPurchase(new Purchase(0004, 450));
+        order.addPurchase(new Purchase(0006, 250));
+        try {
+            orderQueue.processOrder(order);
+            orderQueue.add(order);
+        } catch (Exception ex) {
 
-//        OrderQueue orderQueue = new OrderQueue();
-//        Order order = new Order("CUST00001", "ABC Construction");
-//        order.addPurchase(new Purchase(0004, 450));
-//        order.addPurchase(new Purchase(0006, 250));
-//        orderQueue.processOrder(order);
-//        orderQueue.add(order);
-//        long expResult = new Date().getTime();
-//        long result = order.getTimeReceived().getTime();
-//        assertTrue(Math.abs(result - expResult) < 1000);
+            choice = true;
+        }
+        assertTrue(choice);
+
     }
 
     @Test
-    public void testWhenRequestToFilfullOrderAndOrderHasTimeProcessedAndTimeReceivedThenSetTheFulfilledTime() {
+    public void testWhenRequestToFilfullOrderAndOrderHasTimeProcessedAndTimeReceivedThenSetTheFulfilledTime() throws Exception {
+       OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("CUST00001", "ABC Construction");
+        order.addPurchase(new Purchase(0004, 450));
+        order.addPurchase(new Purchase(0006, 250));
+        orderQueue.add(order);
+        orderQueue.processOrder(order);
+        orderQueue.fulfill(order);
 
+        long expResult = new Date().getTime();
+        long result = order.getTimeFulfilled().getTime();
+        assertEquals(expResult,result);
     }
 
     @Test
-    public void testWhenRequestToFulFillOrderAndOrderNotHaveTimeProcessedThenThrowException() {
-
+    public void testWhenRequestToFulFillOrderAndOrderNotHaveTimeProcessedThenThrowException() throws Exception {
+       Boolean choice=false;
+        OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("CUST00001", "ABC Construction");
+        order.addPurchase(new Purchase(0004, 450));
+        order.addPurchase(new Purchase(0006, 250));
+        orderQueue.add(order);
+        
+        try {
+        
+        orderQueue.fulfill(order);
+        }
+       catch(Exception ex){
+           choice=true; 
+       }
+        assertTrue(choice);
     }
 
     @Test
     public void testWhenRequestToFulFillOrderAndOrderNotHaveTimeReceivedThenThrowException() {
-
+    
     }
 
     @Test
