@@ -110,5 +110,17 @@ public class OrderQueueTest {
         Order b = orderQueue.nextOrder();
         assertNull(b);
     }
-    
+        @Test
+    public void testWhenProcessOrderTheOrderHaveTimeRecivedTimeSetProcessedToNow() throws Exception {
+        //problem here in this test case
+        OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("CUST00001", "ABC Construction");
+        order.addPurchase(new Purchase(0004, 450));
+        order.addPurchase(new Purchase(0006, 250));
+        orderQueue.processOrder(order);
+        orderQueue.add(order);
+        long expResult = new Date().getTime();
+        long result = order.getTimeReceived().getTime();
+        assertTrue(Math.abs(result - expResult) < 1000);
+    }
 }
