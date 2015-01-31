@@ -93,5 +93,22 @@ public class OrderQueueTest {
         assertTrue(choice);
         
     } 
+       @Test
+    public void testWhenRequestNextOrderThenReturnOrderWithEarliestTimeRecivedAndDoesNotHaveTimeProcessed() throws Exception {
+        OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("CUST00001", "ABC Construction");
+        order.addPurchase(new Purchase(0004, 450));
+        order.addPurchase(new Purchase(0006, 250));
+        orderQueue.add(order);
+        Order b = orderQueue.nextOrder();
+        
+        assertEquals(order, b);
+    }
+        @Test
+    public void testWhenRequestForNextOrderAndThereIsNoOrderInSystemReturnNull() throws Exception {
+        OrderQueue orderQueue = new OrderQueue();
+        Order b = orderQueue.nextOrder();
+        assertNull(b);
+    }
     
 }
