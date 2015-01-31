@@ -123,7 +123,8 @@ public class OrderQueueTest {
         order.addPurchase(new Purchase(0004, 450));
         order.addPurchase(new Purchase(0006, 250));
         orderQueue.add(order);
-        orderQueue.processOrder(orderQueue.nextOrder());
+        
+        orderQueue.processOrder(order);
         
         long expResult = new Date().getTime();
         long result = order.getTimeReceived().getTime();

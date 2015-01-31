@@ -43,16 +43,22 @@ public class OrderQueue {
 
     public Order nextOrder() {
         return orderQueue.peek();
-         
+
     }
+
     public void processOrder(Order order) throws Exception {
-       for(Purchase p: order.getListOfPurchases()) {
-        if(Inventory.getQuantityForId(p.getProductId())<p.getQuantity()) {
-           throw new Exception("No Purchase are in-stock in Inventory Table"); 
+       
+        for (Purchase p : order.getListOfPurchases()) {
+            if (Inventory.getQuantityForId(p.getProductId()) < p.getQuantity()) {
+                throw new Exception("No Purchase are in-stock in Inventory Table");
+            }
+            else {
+                order.setTimeProcessed(new Date());
+            }
         }
-    }
+
         
-        order.setTimeReceived(new Date());
+
     }
 
     public void remove(Order order) {
