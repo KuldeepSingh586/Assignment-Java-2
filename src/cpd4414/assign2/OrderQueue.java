@@ -47,18 +47,17 @@ public class OrderQueue {
     }
 
     public void processOrder(Order order) throws Exception {
-       
-        for (Purchase p : order.getListOfPurchases()) {
-            if (Inventory.getQuantityForId(p.getProductId()) < p.getQuantity()) {
-                throw new Exception("No Purchase are in-stock in Inventory Table");
+        boolean value = true;
+        if (order.getTimeReceived() == null) {
+            throw new Exception("Order does not have time received");
+        } else {
+            for (Purchase p : order.getListOfPurchases()) {
+                if (Inventory.getQuantityForId(p.getProductId()) <= p.getQuantity()) {
+                 value=false;   
+                }
             }
-            else {
-                order.setTimeProcessed(new Date());
-            }
+
         }
-
-        
-
     }
 
     public void remove(Order order) {
