@@ -25,7 +25,7 @@ import org.junit.Test;
 
 /**
  *
- * @author Len Payne <len.payne@lambtoncollege.ca>
+ * @author Kuldeep Singh <c0648442@lambtoncollege.ca>
  */
 public class OrderQueueTest {
 
@@ -148,7 +148,7 @@ public class OrderQueueTest {
 
     @Test
     public void testWhenRequestToFilfullOrderAndOrderHasTimeProcessedAndTimeReceivedThenSetTheFulfilledTime() throws Exception {
-       OrderQueue orderQueue = new OrderQueue();
+        OrderQueue orderQueue = new OrderQueue();
         Order order = new Order("CUST00001", "ABC Construction");
         order.addPurchase(new Purchase(0004, 450));
         order.addPurchase(new Purchase(0006, 250));
@@ -158,35 +158,59 @@ public class OrderQueueTest {
 
         long expResult = new Date().getTime();
         long result = order.getTimeFulfilled().getTime();
-        assertEquals(expResult,result);
+        assertEquals(expResult, result);
     }
 
     @Test
     public void testWhenRequestToFulFillOrderAndOrderNotHaveTimeProcessedThenThrowException() throws Exception {
-       Boolean choice=false;
+        Boolean choice = false;
         OrderQueue orderQueue = new OrderQueue();
         Order order = new Order("CUST00001", "ABC Construction");
         order.addPurchase(new Purchase(0004, 450));
         order.addPurchase(new Purchase(0006, 250));
         orderQueue.add(order);
-        
+
         try {
-        
-        orderQueue.fulfill(order);
+
+            orderQueue.fulfill(order);
+        } catch (Exception ex) {
+            choice = true;
         }
-       catch(Exception ex){
-           choice=true; 
-       }
         assertTrue(choice);
     }
 
     @Test
-    public void testWhenRequestToFulFillOrderAndOrderNotHaveTimeReceivedThenThrowException() {
-    
+    public void testWhenRequestToFulFillOrderAndOrderNotHaveTimeReceivedThenThrowException() throws Exception {
+        Boolean choice = false;
+        OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("CUST00001", "ABC Construction");
+        order.addPurchase(new Purchase(0004, 450));
+        order.addPurchase(new Purchase(0006, 250));
+
+        try {
+
+            orderQueue.fulfill(order);
+        } catch (Exception ex) {
+            choice = true;
+        }
+        assertTrue(choice);
     }
 
     @Test
-    public void testWhenRequestToReportAndNoOrderInSystemThenRetuenEmptyString() {
+    public void testWhenRequestToReportAndNoOrderInSystemThenRetuenEmptyString() throws Exception {
+    OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("CUST00001", "ABC Construction");
+        order.addPurchase(new Purchase(0004, 450));
+        order.addPurchase(new Purchase(0006, 250));
+        orderQueue.add(order);
+        
+         Order orderNext = new Order("CUST00002", "XYZ Construction");
+        orderNext.addPurchase(new Purchase(0007, 451));
+        orderNext.addPurchase(new Purchase(0001, 251));
+        orderQueue.add(orderNext);
 
+        String report=orderQueue.report(order,"orders");
+        long time=new Date().getTime();
+        
     }
 }

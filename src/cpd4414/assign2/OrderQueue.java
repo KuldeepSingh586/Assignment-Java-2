@@ -16,16 +16,25 @@
 package cpd4414.assign2;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Queue;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  *
- * @author Len Payne <len.payne@lambtoncollege.ca>
+ * @author Kuldeep Singh < c0648442@lambtoncollege.ca>
  */
 public class OrderQueue {
 
     Queue<Order> orderQueue = new ArrayDeque<>();
+    Queue<Order> orderProcessQueue = new ArrayDeque<>();
 
     public void add(Order order) throws Exception {
 
@@ -46,6 +55,10 @@ public class OrderQueue {
 
     }
 
+    public void remove(Order order) {
+        orderQueue.remove(order);
+    }
+
     public void processOrder(Order order) throws Exception {
         boolean value = true;
         if (order.getTimeReceived() == null) {
@@ -53,14 +66,43 @@ public class OrderQueue {
         } else {
             for (Purchase p : order.getListOfPurchases()) {
                 if (Inventory.getQuantityForId(p.getProductId()) <= p.getQuantity()) {
-                 value=false;   
+                    value = false;
                 }
             }
 
         }
+        if (value == false) {
+            order.setTimeProcessed(new Date());
+        } else {
+            order.setTimeProcessed(new Date());
+            orderQueue.add(order);
+            orderQueue.remove(order);
+        }
     }
 
-    public void remove(Order order) {
-        orderQueue.remove(order);
+    public void fulfill(Order order) throws Exception {
+        if (order.getTimeProcessed() == null) {
+            throw new Exception("Order does not have Time Processed");
+        }
+        if (order.getTimeReceived() == null) {
+            throw new Exception("Order does not have Received");
+        } else {
+            order.setTimeFulfilled(new Date());
+        }
+    }
+
+    public String report(Order order, String listTypeOrder) {
+        
+            String str="";
+                LinkedHashMap m1 = new LinkedHashMap();
+                LinkedList l1 = new LinkedList();
+              
+                m1.put("customerId", order.getCustomerId());
+                m1.put("customerName", order.getCustomerName());
+                m1.put("timeReceived", order.getTimeReceived());
+                m1.put("timeProcessed", order.getTimeProcessed());
+                m1.put("timeFulfilled", order.getTimeFulfilled());
+                return str;
+
     }
 }
